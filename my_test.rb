@@ -1,7 +1,7 @@
 require 'map_reduce_job'
 require 'pp'
 
-job = MapReduceJob.new
+job = MapReduceJob.new ARGV.shift
 #job.data = File::readlines('/Users/davidpick/Documents/shaks12.txt')
 job.data = File::readlines('/Users/davidpick/Documents/Scripts/movefiles.rb')
 job.partition = Partitioner::array_data_split_by_first_entry

@@ -6,16 +6,14 @@
 # the same terms as Ruby.
 #
 
-require 'rinda/tuplespace'
+require 'rinda/ring'
 require 'worker_task'
 
 # Start Rinda and find TupleSpace
 #
 DRb.start_service
-#ring_server = Rinda::RingFinger.primary
 
-#ts = ring_server.read([:name, :TupleSpace, nil, nil])[2]
-ts = Rinda::TupleSpaceProxy.new(DRbObject.new_with_uri('druby://localhost:12345'))
+ts = DRbObject.new nil, ARGV.shift
 
 # Wait for tasks, pull them off and run them
 #

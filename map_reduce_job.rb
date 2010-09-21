@@ -19,7 +19,7 @@ class MapReduceJob
 
   # New job: caller specifies quantity of map and reduce tasks.
   #
-  def initialize(map_tasks = 10, reduce_tasks = 2)
+  def initialize(server, map_tasks = 10, reduce_tasks = 2)
     @map_tasks = map_tasks
     @reduce_tasks = reduce_tasks
     @silent = false
@@ -30,7 +30,9 @@ class MapReduceJob
     #ring_server = Rinda::RingFinger.primary
 
     #ts = ring_server.read([:name, :TupleSpace, nil, nil])[2]
-    @tuple_space = Rinda::TupleSpaceProxy.new(DRbObject.new_with_uri('druby://localhost:12345'))
+    ts = DRbObject.new nil, server
+
+    @tuple_space = Rinda::TupleSpaceProxy.new ts
   end
   
   # Submit tasks to Rinda tuplespace, collect results. Used for
@@ -72,6 +74,7 @@ class MapReduceJob
     # Run map tasks
     #
     map_data = run_tasks("map", map_tasks)
+    puts "here"
 
     # Re-partition returning data for reduction, create reduce tasks
     #
