@@ -8,7 +8,7 @@ end
 
 task :rinda do
   system "ruby ringserver.rb &"
-  system "ruby tuplespace.rb &"
+  #system "ruby tuplespace.rb &"
 end
 
 task :worker do

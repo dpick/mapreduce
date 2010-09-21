@@ -27,10 +27,10 @@ class MapReduceJob
     # Start Rinda tuplespace
     #
     DRb.start_service
-    ring_server = Rinda::RingFinger.primary
+    #ring_server = Rinda::RingFinger.primary
 
-    ts = ring_server.read([:name, :TupleSpace, nil, nil])[2]
-    @tuple_space = Rinda::TupleSpaceProxy.new ts
+    #ts = ring_server.read([:name, :TupleSpace, nil, nil])[2]
+    @tuple_space = Rinda::TupleSpaceProxy.new(DRbObject.new_with_uri('druby://localhost:12345'))
   end
   
   # Submit tasks to Rinda tuplespace, collect results. Used for
