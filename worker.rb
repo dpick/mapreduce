@@ -13,17 +13,17 @@ require 'worker_task'
 #
 DRb.start_service
 
-ts = DRbObject.new nil, ARGV.shift
+ts = DRbObject.new nil, 'druby://137.112.147.92:1234'
 
 # Wait for tasks, pull them off and run them
 #
 loop do
-  tuple = ts.take(['task', nil, nil])
+  tuple = ts[:task].shift
   task = tuple[2]
-  print "taking task #{task.task_id}... "
+  print "taking task #{task.id}... "
   
   result = task.run
   puts "done"
   
-  ts.write(['result', tuple[1], task.task_id, result])
+  ts[:result] << ['result', tuple[1], task.task_id, result]
 end

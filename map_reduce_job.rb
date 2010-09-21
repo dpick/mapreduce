@@ -23,16 +23,13 @@ class MapReduceJob
     @map_tasks = map_tasks
     @reduce_tasks = reduce_tasks
     @silent = false
+    @server = server
     
     # Start Rinda tuplespace
     #
     DRb.start_service
-    #ring_server = Rinda::RingFinger.primary
 
-    #ts = ring_server.read([:name, :TupleSpace, nil, nil])[2]
-    ts = DRbObject.new nil, server
-
-    @tuple_space = Rinda::TupleSpaceProxy.new ts
+    @tuple_space = DRbObject.new_with_uri(server)
   end
   
   # Submit tasks to Rinda tuplespace, collect results. Used for
@@ -43,12 +40,12 @@ class MapReduceJob
     
     tasks.each do |task|
       puts "submitting #{description} task #{task.task_id}" unless @silent
-      @tuple_space.write(['task', DRb.uri, task])
+      @tuple_space[:task] << task
     end
 
     tasks.each_with_index do |task, i|
       # Get result: tuple[2] is task ID to look for, tuple[3] will be result
-      tuple = @tuple_space.take(['result', DRb.uri, task.task_id, nil])
+      tuple = @tuple_space[:result].shift
       result[i] = tuple[3]
     end
     
@@ -74,7 +71,6 @@ class MapReduceJob
     # Run map tasks
     #
     map_data = run_tasks("map", map_tasks)
-    puts "here"
 
     # Re-partition returning data for reduction, create reduce tasks
     #

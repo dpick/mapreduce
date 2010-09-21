@@ -6,7 +6,7 @@ require 'rinda/ring'
 require 'rinda/tuplespace'
 
 # start DRb
-DRb.start_service nil, Rinda::TupleSpace.new
+DRb.start_service 'druby://137.112.112.150:1234', {:task => [], result => []}
 
 puts DRb.uri
 

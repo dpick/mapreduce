@@ -6,7 +6,7 @@ job = MapReduceJob.new ARGV.shift
 job.data = File::readlines('/Users/davidpick/Documents/Scripts/movefiles.rb')
 job.partition = Partitioner::array_data_split_by_first_entry
 
-job.map = lambda do |lines|
+job.map = %{lambda do |lines|
   result = Array.new
 
   lines.each do |line|
@@ -16,10 +16,10 @@ job.map = lambda do |lines|
   end
 
   result
-end
+end}
 
 
-job.reduce = lambda do |pairs|
+job.reduce = %{lambda do |pairs|
   totals = Hash.new
 
   pairs.each do |pair|
@@ -30,7 +30,7 @@ job.reduce = lambda do |pairs|
   end
 
   totals
-end
+end}
 
 result = job.run
 
