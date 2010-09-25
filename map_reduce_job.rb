@@ -26,9 +26,7 @@ class MapReduceJob
     @reduce_tasks = reduce_tasks
     @silent = false
 
-    DRb.start_service 'druby://localhost:1234', Rinda::TupleSpace.new
-    
-    @tuple_space = DRbObject.new nil, 'druby://localhost:1234'
+    @tuple_space = DRbObject.new nil, 'druby://137.112.147.92:1234'
   end
   
   # Submit tasks to Rinda tuplespace, collect results. Used for
@@ -39,12 +37,12 @@ class MapReduceJob
     
     tasks.each do |task|
       puts "submitting #{description} task #{task.task_id}" unless @silent
-      @tuple_space.write(['task', DRb.uri, task])
+      @tuple_space.write(['task', 'druby://137.112.147.92:1234', task])
     end
 
     tasks.each_with_index do |task, i|
       # Get result: tuple[2] is task ID to look for, tuple[3] will be result
-      tuple = @tuple_space.take(['result', DRb.uri, task.task_id, nil])
+      tuple = @tuple_space.take(['result', 'druby://137.112.147.92:1234', task.task_id, nil])
       result[i] = tuple[3]
     end
     

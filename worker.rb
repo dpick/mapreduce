@@ -10,12 +10,7 @@ require 'rinda/ring'
 require 'rinda/tuplespace'
 require 'worker_task'
 
-
-#DRb.start_service 'druby://localhost:1234', Rinda::TupleSpace.new
-
-ts = DRbObject.new nil, 'druby://localhost:1234'
-
-puts ts.take(['task', nil, nil])
+ts = DRbObject.new nil, 'druby://137.112.147.92:1234'
 
 # Wait for tasks, pull them off and run them
 #

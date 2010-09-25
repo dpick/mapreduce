@@ -3,8 +3,8 @@ require 'pp'
 
 puts now = Time.now
 job = MapReduceJob.new
-job.data = File::readlines('/Users/davidpick/Documents/shaks12.txt')
-#job.data = File::readlines('/Users/davidpick/Documents/Scripts/movefiles.rb')
+#job.data = File::readlines('/Users/davidpick/Documents/shaks12.txt')
+job.data = File::readlines('/Users/davidpick/Documents/Scripts/movefiles.rb')
 job.partition = Partitioner::array_data_split_by_first_entry
 
 job.map = %{lambda do |lines|
@@ -37,9 +37,6 @@ result = job.run
 
 result.each do |partition|
   pp partition
-  #partition.each_pair do |word, total|
-  #  printf "%3d: %s\n", total, word
-  #end
 end
 
 puts Time.now - now
