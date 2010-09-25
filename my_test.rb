@@ -1,12 +1,13 @@
 require 'map_reduce_job'
 require 'pp'
 
-job = MapReduceJob.new ARGV.shift
-#job.data = File::readlines('/Users/davidpick/Documents/shaks12.txt')
-job.data = File::readlines('/Users/davidpick/Documents/Scripts/movefiles.rb')
+puts now = Time.now
+job = MapReduceJob.new
+job.data = File::readlines('/Users/davidpick/Documents/shaks12.txt')
+#job.data = File::readlines('/Users/davidpick/Documents/Scripts/movefiles.rb')
 job.partition = Partitioner::array_data_split_by_first_entry
 
-job.map = %{lambda do |lines|
+job.map = lambda do |lines|
   result = Array.new
 
   lines.each do |line|
@@ -16,10 +17,10 @@ job.map = %{lambda do |lines|
   end
 
   result
-end}
+end
 
 
-job.reduce = %{lambda do |pairs|
+job.reduce = lambda do |pairs|
   totals = Hash.new
 
   pairs.each do |pair|
@@ -30,7 +31,7 @@ job.reduce = %{lambda do |pairs|
   end
 
   totals
-end}
+end
 
 result = job.run
 
@@ -40,3 +41,5 @@ result.each do |partition|
   #  printf "%3d: %s\n", total, word
   #end
 end
+
+puts Time.now - now

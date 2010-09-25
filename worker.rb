@@ -12,18 +12,20 @@ require 'worker_task'
 # Start Rinda and find TupleSpace
 #
 DRb.start_service
+ring_server = Rinda::RingFinger.primary
 
-ts = DRbObject.new nil, 'druby://137.112.147.92:1234'
+ts = ring_server.read([:name, :TupleSpace, nil, nil])[2]
+ts = Rinda::TupleSpaceProxy.new ts
 
 # Wait for tasks, pull them off and run them
 #
 loop do
-  tuple = ts[:task].shift
+  tuple = ts.take(['task', nil, nil])
   task = tuple[2]
-  print "taking task #{task.id}... "
+  print "taking task #{task.task_id}... "
   
   result = task.run
   puts "done"
   
-  ts[:result] << ['result', tuple[1], task.task_id, result]
+  ts.write(['result', tuple[1], task.task_id, result])
 end

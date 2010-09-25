@@ -6,11 +6,10 @@ require 'rinda/ring'
 require 'rinda/tuplespace'
 
 # start DRb
-DRb.start_service 'druby://137.112.112.150:1234', {:task => [], result => []}
-
-puts DRb.uri
+DRb.start_service
 
 # Create a TupleSpace to hold named services, and start running
+Rinda::RingServer.new Rinda::TupleSpace.new
 
 # Wait until the user explicitly kills the server.
 DRb.thread.join
