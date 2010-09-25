@@ -18,6 +18,6 @@ class WorkerTask
   end
   
   def run
-    @process.call @data
+    (eval @process).call @data
   end
 end

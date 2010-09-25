@@ -6,7 +6,9 @@
 #
 
 require 'rinda/ring'
+require 'rinda/tuplespace'
 require 'worker_task'
+require 'drb'
 
 # Users should create instances of this class. Rather than subclassing,
 # jobs are specialized by assigning lambdas to map, reduce, and partition.
@@ -23,14 +25,10 @@ class MapReduceJob
     @map_tasks = map_tasks
     @reduce_tasks = reduce_tasks
     @silent = false
-    
-    # Start Rinda tuplespace
-    #
-    DRb.start_service
-    ring_server = Rinda::RingFinger.primary
 
-    ts = ring_server.read([:name, :TupleSpace, nil, nil])[2]
-    @tuple_space = Rinda::TupleSpaceProxy.new ts
+    DRb.start_service 'druby://localhost:1234', Rinda::TupleSpace.new
+    
+    @tuple_space = DRbObject.new nil, 'druby://localhost:1234'
   end
   
   # Submit tasks to Rinda tuplespace, collect results. Used for

@@ -7,15 +7,15 @@
 #
 
 require 'rinda/ring'
+require 'rinda/tuplespace'
 require 'worker_task'
 
-# Start Rinda and find TupleSpace
-#
-DRb.start_service
-ring_server = Rinda::RingFinger.primary
 
-ts = ring_server.read([:name, :TupleSpace, nil, nil])[2]
-ts = Rinda::TupleSpaceProxy.new ts
+#DRb.start_service 'druby://localhost:1234', Rinda::TupleSpace.new
+
+ts = DRbObject.new nil, 'druby://localhost:1234'
+
+puts ts.take(['task', nil, nil])
 
 # Wait for tasks, pull them off and run them
 #

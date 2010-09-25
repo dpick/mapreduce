@@ -4,12 +4,8 @@
 
 require 'rinda/ring'
 require 'rinda/tuplespace'
+require 'drb'
 
-# start DRb
-DRb.start_service
+DRb.start_service 'druby://localhost:1234', Rinda::TupleSpace.new
 
-# Create a TupleSpace to hold named services, and start running
-Rinda::RingServer.new Rinda::TupleSpace.new
-
-# Wait until the user explicitly kills the server.
 DRb.thread.join
