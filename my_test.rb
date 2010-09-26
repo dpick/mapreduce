@@ -3,15 +3,15 @@ require 'pp'
 
 puts now = Time.now
 job = MapReduceJob.new
-#job.data = File::readlines('/Users/davidpick/Documents/shaks12.txt')
-job.data = File::readlines('/Users/davidpick/Documents/Scripts/movefiles.rb')
+#job.data = File::readlines('/Users/davidpick/Documents/Scripts/movefiles.rb')
+job.data = File::readlines('/Users/davidpick/Downloads/twelfthnight.txt')
 job.partition = Partitioner::array_data_split_by_first_entry
 
 job.map = %{lambda do |lines|
   result = Array.new
 
   lines.each do |line|
-    line.scan(/\w+/).each do |word|
+    line.split.each do |word|
       result << [word, 1]
     end
   end
