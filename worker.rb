@@ -1,10 +1,4 @@
 #!/usr/bin/env ruby -w
-#
-# Copyright (c) 2006 Josh Carter <josh@multipart-mixed.com>
-#
-# All rights reserved.  You can redistribute and/or modify this under
-# the same terms as Ruby.
-#
 
 require 'rinda/ring'
 require 'rinda/tuplespace'

@@ -1,0 +1,5 @@
+First change the ip in ringserver.rb, worker.rb, and map_reduce_task.rb
+
+Then in sperate terminals run 'ruby ringserver.rb', 'ruby worker.rb' (you'll need two of these), and 'ruby my_test.rb'
+
+To change the map or reduce functions, edit the my_test.rb file
